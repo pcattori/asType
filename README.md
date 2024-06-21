@@ -38,19 +38,13 @@ declare module "./blah.ts" {
     z: boolean
   }
 }
+
+// elsewhere.ts
+import { Blah } from "blah"
+let b: Blah = { x: 1, y: "hello", z: false }
 ```
 
-If you don't need interface merging, I'd highly recommend you use `type` instead of `interface`.
-
-> [!NOTE]  
-> I've seen some folks argue that you should use `interface` over `type` for performance reasons.
-> Apparently there are some scenarios where the TS type checker is faster when processing `interface` than `type`.
->
-> My first question is always: "Have you profiled it?"
-> Maybe `interface` vs `type` perf is insignificant for your project.
-> But even if you _have_ profiled it, know that you are changing the _semantics_ of your types by replacing `type` with `interface`.
-> They mean different things today and they will continue to mean different things tomorrow.
-> Whereas the TS type checker could get faster tomorrow.
+To me this feels like [spooky action at a distance](https://en.wikipedia.org/wiki/Quantum_entanglement#:~:text=Like%20Einstein%2C%20Schr%C3%B6dinger%20was%20dissatisfied,spooky%20action%20at%20a%20distance.%22), so I tend to avoid `interface`s unless I really need them.
 
 ### Interfaces behave unintuitively
 
