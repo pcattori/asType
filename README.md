@@ -1,5 +1,12 @@
 # asType
 
+You've got `interface`s causing problems and you want `type`s instead: use `asType`!
+
+## Install
+
+Copy/paste `asType.ts` into your project.
+It's tiny and you can adapt it to fit your needs.
+
 ## The Problem
 
 ### Interface merging
