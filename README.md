@@ -1,6 +1,8 @@
 # asType
 
 You've got `interface`s causing problems and you want `type`s instead: use `asType`!
+Check out this [minimal TypeScript playground](https://tsplay.dev/Wk1pJN) to quickly get the gist of what's this is all about.
+Then keep read this doc.
 
 ## Install
 
