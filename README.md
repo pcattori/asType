@@ -1,12 +1,12 @@
 # asType
 
 You've got `interface`s causing problems and you want `type`s instead: use `asType`!
-Check out this [minimal TypeScript playground](https://tsplay.dev/Wk1pJN) to quickly get the gist of what's this is all about.
+Check out this [minimal TypeScript playground](https://tsplay.dev/Wk1pJN) to quickly get the gist of what this is all about.
 Then keep read this doc.
 
 ## Install
 
-Copy/paste `asType.ts` into your project.
+Copy/paste [`asType.ts`](./asType.ts) into your project.
 It's tiny and you can adapt it to fit your needs.
 
 ## The Problem
@@ -50,13 +50,13 @@ To me this feels like [spooky action at a distance](https://en.wikipedia.org/wik
 
 Unfortunately, you can't always use `type`.
 Sometimes you really do want interface merging.
-Or much more commonly, you might be using a dependency that use `interface`s internally.
+Or much more commonly, you might be using a dependency that uses `interface`s internally.
 
 So what exactly is the problem with `interface`?
 
 > Because interfaces can be augmented by additional declarations but type aliases can't, it's "safer" (heavy quotes on that one) to infer an implicit index signature for type aliases than for interfaces. ([source](https://github.com/microsoft/TypeScript/issues/15300#issuecomment-332366024))
 >
-> -- Ryan Cavanaugh (Development lead for the TypeScript team at Microsoft)
+> —Ryan Cavanaugh (Development lead for the TypeScript team at Microsoft)
 
 Ok so that's the theoretical knowledge, but let's make it concrete by looking at an example:
 
@@ -96,7 +96,7 @@ save(post) // ❌ 😱
 //     Index signature for type 'string' is missing in type 'PostI'.(2345)
 ```
 
-[View this example as in TypeScript playground](https://tsplay.dev/WY10xW)
+[View this example in a TypeScript playground](https://tsplay.dev/WY10xW)
 
 ## The Solution
 
@@ -111,17 +111,17 @@ Unless you explicitly _want_ interface merging, go with `type`.
 I've seen some folks argue that you should use `interface` over `type` for performance reasons.
 Apparently there are some scenarios where the TS type checker is faster when processing `interface` than `type`.
 
-My first question is always: "Have you profiled it?"
-Maybe `interface` vs `type` perf is insignificant for your project.
-But even if you _have_ profiled it, know that you are changing the _semantics_ of your types by replacing `type` with `interface`.
-They mean different things today and they will continue to mean different things tomorrow.
-Whereas the TS type checker could get faster tomorrow.
+Before taking generalized performance advice at face value, it's a good idea to first profile your project the performance impact for yourself. Maybe `interface` vs `type` perf is insignificant for your project.
 
-But what if you don't control that code? Like what if its coming from a dependency?
+Even if you _have_ profiled it, know that you are changing the _semantics_ of your types by replacing `type` with `interface`.
+They mean different things today and they will continue to mean different things tomorrow.
+While the semantic difference between `type` and `interface` will unlikely change, the TS type checker has gotten faster over time and will likely continue to.
+
+But what if you don't control the code using `interface`s? What if it's coming from a dependency?
 
 ### Attempts at manual fixes
 
-In the specific example, TS is telling us that `PostI` is missing an index signature so we could just add one:
+In this specific example, TS is telling us that `PostI` is missing an index signature so we could just add one:
 
 ```ts
 interface PostI {
@@ -164,7 +164,7 @@ interface NotData {
 
 By default, TS will throw a type checking error on the line that defines `bad`.
 But if you have `skipLibCheck` enabled in your `tsconfig.json`, that error disappears since its in your dependencies.
-Which is bad since there's a legit error here with the way you patched `NotData` in your app code.
+This is bad since there's a legit error here with the way you patched `NotData` in your app code.
 
 Ok so just don't enable `skipLibCheck` right?
 Well, it's [generally recommended that you do enable `skipLibCheck`](https://www.totaltypescript.com/tsconfig-cheat-sheet) since the reality is that there are tons of libraries out there with gnarly type errors that don't actually affect your app.
